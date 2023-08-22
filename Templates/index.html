@@ -1,7 +1,11 @@
-<h1>{{name}}</h1>
-<h2>I am from Ranipet!</h2>
-<h2>Pursuing BE CSE</h2>
-<h1>Favourite Languages</h1>
-{% for Language in Languages%}
-    <h3>{{Language}}</h3></br>
-{% endfor %}
+{% extends 'base.html'%}
+{% block content %}
+    <h1>{{name}}</h1>
+    <h2>I am from Ranipet!</h2>
+    <h2>Pursuing BE CSE</h2>
+    <h1>Favourite Languages</h1>
+    {% for Language in Languages%}
+        <h3>{{Language}}</h3></br>
+    {% endfor %}
+
+{% endblock %}
