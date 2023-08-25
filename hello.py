@@ -2,6 +2,15 @@ from flask import Flask,render_template,flash
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField
 from wtforms.validators import DataRequired
+import mysql.connector
+
+conn=mysql.connector.connect(
+	host='localhost',
+	user='root',
+	password='root',
+	database='adduser'
+	)
+
 
 #create an instance
 app=Flask(__name__)
@@ -46,6 +55,13 @@ def name():
 		form.name.data=''
 		flash("Form Submitted Successfully !!")
 	return render_template('name.html',name=name,form=form)
+
+@app.route('/adduser',methods=['GET','POST'])
+def add_user():
+	cursor=conn.cursor()
+	query="SELECT * FROM user_list"
+	cursor.execute(query)
+	return render_template('create_user.html',user=cursor)
 
 
 
