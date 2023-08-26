@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField
 from wtforms.validators import DataRequired
 import mysql.connector
+from datetime import datetime
 
 conn=mysql.connector.connect(
 	host='localhost',
@@ -20,6 +21,12 @@ app.config['SECRET_KEY']="This is my secret key that is something"
 class NamerForm(FlaskForm):
 	name=StringField("What's Your Name?",validators=[DataRequired()])
 	submit=SubmitField("Submit")
+
+class UserForm(FlaskForm):
+	name=StringField("Name",validators=[DataRequired()])
+	email=StringField("Email",validators=[DataRequired()])
+	submit=SubmitField("Submit")
+
 
 #create an route
 @app.route('/home/<name>')
@@ -56,12 +63,14 @@ def name():
 		flash("Form Submitted Successfully !!")
 	return render_template('name.html',name=name,form=form)
 
-@app.route('/adduser',methods=['GET','POST'])
+@app.route('/user/add',methods=['GET','POST'])
 def add_user():
+	name=None
+	form=UserForm()
 	cursor=conn.cursor()
 	query="SELECT * FROM user_list"
 	cursor.execute(query)
-	return render_template('create_user.html',user=cursor)
+	return render_template('create_user.html',user=cursor,form=form)
 
 
 
