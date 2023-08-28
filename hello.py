@@ -11,6 +11,9 @@ conn=mysql.connector.connect(
 	password='root',
 	database='adduser'
 	)
+cursor=conn.cursor()
+query="SELECT * FROM user_list"
+cursor.execute(query)
 
 
 #create an instance
@@ -67,10 +70,15 @@ def name():
 def add_user():
 	name=None
 	form=UserForm()
-	cursor=conn.cursor()
-	query="SELECT * FROM user_list"
-	cursor.execute(query)
-	return render_template('create_user.html',user=cursor,form=form)
+	if form.validate_on_submit():
+		if user is None:
+			user=add_user(name=form.name.data,email=form.email.data)
+		name=form.name.data
+		form.name.data=''
+		form.email.data=''
+		flash('User Added Successfully!!!')
+	our_users=add_user.query.order_by(add_user.date_added)
+	return render_template('create_user.html',our_posts=our_users,form=form)
 
 
 
